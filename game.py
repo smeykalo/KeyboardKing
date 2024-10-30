@@ -35,7 +35,6 @@ class App(tkinter.Tk):
     """Manages the window for the game"""
     def __init__(self):
         super().__init__()
-
         # Window Setup
         self.title("Keyboard King")
         self.canvas = tkinter.Canvas(self, width=700, height=800, background="black")
