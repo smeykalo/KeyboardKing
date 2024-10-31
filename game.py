@@ -1,5 +1,8 @@
 # Keyboard King
 # Ondřej Smeykal
+### INFO: Původně jsem s tímhle úkolem plánoval o dost víc, a stále plánuji,
+#         nicméně jaksi se to nestíhá. Proto je zde mnoho zbytečných proměnných,
+#         importů a souborů.
 
 ### Module Import ###
 import time
