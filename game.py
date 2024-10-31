@@ -87,13 +87,13 @@ class App(tkinter.Tk):
         """Opens the about window"""
         self.about = tkinter.Toplevel(self)
         self.about.title("About")
-        self.about.geometry("150x50")
+        self.about.geometry("150x125")
 
-        picture = PhotoImage(file=AUTHOR)
+        self.about.picture = PhotoImage(file=AUTHOR)
 
         versionInfo = tkinter.Label(self.about, text="Version: Pre-alpha 1.0")
         devInfo = tkinter.Label(self.about, text="Author: Ondřej Smeykal")
-        devPic = tkinter.Label(self.about, image=picture)
+        devPic = tkinter.Label(self.about, image=self.about.picture)
 
         versionInfo.pack()
         devInfo.pack()
