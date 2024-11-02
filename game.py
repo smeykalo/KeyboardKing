@@ -18,17 +18,28 @@ COLLUMNS = [100, 200, 300, 400, 500, 600]
 KEYMAP = {100:"s", 200:"d", 300:"f", 400:"j", 500:"k", 600:"l"}
 KEYSPRITEMAP = {}
 
-#Sprite Paths
+# Sprite Paths
 if True:
-    SKEY0 = "Assets\Sprites\sKey.png"
-    SKEY1 = "Assets\Sprites\sKeyGreen.png"
-    SKEY2 = "Assets\Sprites\sKeyRed.png"
+    SKEY0 = "Assets\Sprites\SKEY0.png"
+    SKEY1 = "Assets\Sprites\SKEY1.png"
     DKEY0 = "Assets\Sprites\DKEY0.png"
+    DKEY1 = "Assets\Sprites\DKEY1.png"
+    FKEY0 = "Assets\Sprites\FKEY0.png"
+    FKEY1 = "Assets\Sprites\FKEY1.png"
+    JKEY0 = "Assets\Sprites\JKEY0.png"
+    JKEY1 = "Assets\Sprites\JKEY1.png"
+    KKEY0 = "Assets\Sprites\KKEY0.png"
+    KKEY1 = "Assets\Sprites\KKEY1.png"
+    LKEY0 = "Assets\Sprites\LKEY0.png"
+    LKEY1 = "Assets\Sprites\LKEY1.png"
+
     CLASSICBUTTON = "Assets\Sprites\classicTemp.png"
     ENDLESSBUTTON = "Assets\Sprites\EndlessTemp.png"
+
     BALL0 = "Assets\Sprites\Ball0.png"
     BALL1 = "Assets\Sprites\Ball1.png"
     BALL2 = "Assets\Sprites\Ball2.png"
+
     AUTHOR = "Assets\Sprites\AuthorPicture.png"
 
 ### Class Declaration ###
@@ -85,7 +96,6 @@ class App(tkinter.Tk):
         """Displays the tutorial window"""
         tkinter.messagebox.showinfo("How to play", "Press the key corresponding to the column where the ball is falling to get points. Try to get the high score!")
 
-
     def aboutWindow(self):
         """Opens the about window"""
         self.about = tkinter.Toplevel(self)
@@ -94,7 +104,7 @@ class App(tkinter.Tk):
 
         self.about.picture = PhotoImage(file=AUTHOR)
 
-        versionInfo = tkinter.Label(self.about, text="Version: Pre-alpha 1.0")
+        versionInfo = tkinter.Label(self.about, text="Version: Alpha 1.1")
         devInfo = tkinter.Label(self.about, text="Author: Ondřej Smeykal")
         devPic = tkinter.Label(self.about, image=self.about.picture)
 
@@ -153,13 +163,23 @@ class ClassicMode:
         self.canvas = canvas
         self.canvas.create_rectangle(0, 620, 700, 640, fill="red", outline="red")
         
-        self.canvas.create_text(100, 650, text="S", fill="red")
-        self.canvas.create_text(200, 650, text="D", fill="red")
-        self.canvas.create_text(300, 650, text="F", fill="red")
-        self.canvas.create_text(400, 650, text="J", fill="red")
-        self.canvas.create_text(500, 650, text="K", fill="red")
-        self.canvas.create_text(600, 650, text="L", fill="red")
-        
+        ## Variables
+        # Setup for key sprites and changing them
+        self.sSprite = tkinter.PhotoImage(file=SKEY0)
+        self.dSprite = tkinter.PhotoImage(file=DKEY0)
+        self.fSprite = tkinter.PhotoImage(file=FKEY0)
+        self.jSprite = tkinter.PhotoImage(file=JKEY0)
+        self.kSprite = tkinter.PhotoImage(file=KKEY0)
+        self.lSprite = tkinter.PhotoImage(file=LKEY0)
+
+        self.sDown = False
+        self.dDown = False
+        self.fDown = False
+        self.jDown = False
+        self.kDown = False
+        self.lDown = False
+
+        # Other variables
         self.gameOver = False
         self.updating = False
         self.lastCol = None
@@ -167,12 +187,13 @@ class ClassicMode:
         self.lives = 10
         self.switchTime = 3000
         self.canvas.bind("<KeyPress>", self.keyPress)
+        self.canvas.bind("<KeyRelease>", self.keyRelease)
         self.canScore = True
         self.speed = 2
         self.combo = 0
         
         self.update()
-        self.scoreBoard = self.canvas.create_text(80, 680, text=f"Points: {self.score}, Combo: {self.combo}, Lives: {self.lives}", fill="red")
+        self.scoreBoard = self.canvas.create_text(80, 760, text=f"Points: {self.score}, Combo: {self.combo}, Lives: {self.lives}", fill="red")
         
     def resetBall(self):
         """Create a new ball at the top of the screen"""
@@ -203,6 +224,41 @@ class ClassicMode:
 
         except:
             pass
+
+    
+        # Update the key sprites
+        if True:
+            if self.sDown == True:
+                self.sSprite = tkinter.PhotoImage(file=SKEY1)
+            else:
+                self.sSprite = tkinter.PhotoImage(file=SKEY0)
+            if self.dDown == True:
+                self.dSprite = tkinter.PhotoImage(file=DKEY1)
+            else:
+                self.dSprite = tkinter.PhotoImage(file=DKEY0)
+            if self.fDown == True:
+                self.fSprite = tkinter.PhotoImage(file=FKEY1)
+            else:
+                self.fSprite = tkinter.PhotoImage(file=FKEY0)
+            if self.jDown == True:
+                self.jSprite = tkinter.PhotoImage(file=JKEY1)
+            else:
+                self.jSprite = tkinter.PhotoImage(file=JKEY0)
+            if self.kDown == True:
+                self.kSprite = tkinter.PhotoImage(file=KKEY1)
+            else:
+                self.kSprite = tkinter.PhotoImage(file=KKEY0)
+            if self.lDown == True:
+                self.lSprite = tkinter.PhotoImage(file=LKEY1)
+            else:
+                self.lSprite = tkinter.PhotoImage(file=LKEY0)
+
+        self.S = self.canvas.create_image(75, 650, anchor="nw", image=self.sSprite)
+        self.D = self.canvas.create_image(175, 650, anchor="nw", image=self.dSprite)
+        self.F = self.canvas.create_image(275, 650, anchor="nw", image=self.fSprite)
+        self.J = self.canvas.create_image(375, 650, anchor="nw", image=self.jSprite)
+        self.K = self.canvas.create_image(475, 650, anchor="nw", image=self.kSprite)
+        self.L = self.canvas.create_image(575, 650, anchor="nw", image=self.lSprite)
 
         self.updateTimer = self.canvas.after(10, self.update)
 
@@ -241,6 +297,57 @@ class ClassicMode:
                 self.canvas.after(1000, self.laneSwitch)
                 self.combo = 0
         
+        # Change key states
+        if True:
+            if event.keysym == "s":
+                self.sDown = True
+            else:
+                self.sDown = False
+
+            if event.keysym == "d":
+                self.dDown = True
+            else:
+                self.dDown = False
+
+            if event.keysym == "f":
+                self.fDown = True
+            else:
+                self.fDown = False
+
+            if event.keysym == "j":
+                self.jDown = True
+            else:
+                self.jDown = False
+
+            if event.keysym == "k":
+                self.kDown = True
+            else:
+                self.kDown = False
+
+            if event.keysym == "l":
+                self.lDown = True
+            else:
+                self.lDown = False
+
+    def keyRelease(self, event):
+            if event.keysym == "s":
+                self.sDown = False
+            
+            if event.keysym == "d":
+                self.dDown = False
+            
+            if event.keysym == "f":
+                self.fDown = False
+            
+            if event.keysym == "j":
+                self.jDown = False
+            
+            if event.keysym == "k":
+                self.kDown = False
+            
+            if event.keysym == "l":
+                self.lDown = False
+            
     def die(self):
         """Lose one life (after a ball goes over the thing)"""
         # Check for game loss
@@ -254,8 +361,8 @@ class ClassicMode:
         self.ball.delete()
         if self.gameOver != True:
             # Increase the difficulty
-            self.switchTime -= 200
-            self.speed += 0.25
+            self.switchTime -= 100
+            self.speed += 0.5
             self.canvas.after_cancel(self.switchTimer)
             
             self.resetBall()
@@ -289,7 +396,7 @@ class EndlessMode(ClassicMode):
                     self.score += 10*(self.combo-9)
                 # Speed up if conditions are met
                 if self.rawPoints % 10 == 0:
-                    self.speed += 0.5
+                    self.speed += 1
 
             if event.keysym != correctKey:
                 self.canScore = False
@@ -305,6 +412,19 @@ class EndlessMode(ClassicMode):
     def resetBall(self):
         super().resetBall()
         self.canvas.after_cancel(self.switchTimer)
+
+    def die(self):
+        """Lose one life (after a ball goes over the thing)"""
+        # Check for game loss
+        self.lives -= 1
+        self.canScore = True
+        if self.lives == 0:
+            self.gameOver = True
+            self.gameEnd()
+
+        self.ball.delete()
+        if self.gameOver != True:
+            self.resetBall()
 
 
 ### Main Program ###
